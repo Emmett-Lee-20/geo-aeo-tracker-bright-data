@@ -26,7 +26,7 @@ type Check = {
 async function tryFetch(url: string): Promise<{ ok: boolean; text: string; status: number }> {
   try {
     const res = await fetch(url, {
-      headers: { "User-Agent": "Sovereign-AEO-Tracker/1.0" },
+      headers: { "User-Agent": "GEO-AEO-Tracker/1.0" },
       cache: "no-store",
       redirect: "follow",
     });

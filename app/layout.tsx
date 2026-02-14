@@ -15,7 +15,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Sovereign AEO Tracker",
+  title: "GEO/AEO Tracker",
   description: "BYOK AEO/GEO intelligence dashboard with local-first persistence",
 };
 

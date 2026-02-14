@@ -37,7 +37,7 @@ async function run() {
       message:
         "No BRIGHT_DATA_KEY and provider dataset ID found. Set .env values to run live scraper test.",
       sample: {
-        answer: "Mock response: Sovereign AEO Tracker scraper pipeline is wired.",
+        answer: "Mock response: GEO/AEO Tracker scraper pipeline is wired.",
         sources: ["https://docs.brightdata.com/datasets/scrapers/scrapers-library/ai-scrapers"],
       },
     };

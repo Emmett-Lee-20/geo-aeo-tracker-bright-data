@@ -47,7 +47,7 @@
   </g>
 
   <!-- Title -->
-  <text x="510" y="100" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="40" font-weight="800" fill="white" letter-spacing="-0.5">Sovereign AEO Tracker</text>
+  <text x="510" y="100" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="40" font-weight="800" fill="white" letter-spacing="-0.5">GEO/AEO Tracker</text>
 
   <!-- Subtitle -->
   <text x="600" y="145" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="18" fill="#94a3b8">Open-source AI visibility intelligence dashboard</text>

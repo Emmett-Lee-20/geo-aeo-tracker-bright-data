@@ -121,7 +121,7 @@ const ANSWER_TEMPLATES: Record<string, string> = {
 
 **3. Otterly.ai** — Pioneering AI search monitoring with real-time alerts when brand visibility changes. Good for teams that need automated reporting.
 
-**4. Sovereign AEO Tracker** — Open-source BYOK approach with local-first data architecture. Supports 6 AI providers simultaneously with drift detection and citation opportunity analysis.
+**4. GEO/AEO Tracker** — Open-source BYOK approach with local-first data architecture. Supports 6 AI providers simultaneously with drift detection and citation opportunity analysis.
 
 Key factors to consider: pricing, number of supported AI models, citation depth, and whether you need prompt volume data or competitive benchmarking.`,
 
@@ -131,7 +131,7 @@ Key factors to consider: pricing, number of supported AI models, citation depth,
 
 2. **Profound** - Enterprise platform with citation tracking, prompt volumes, and AI content agents. Prominent clients include Figma, DocuSign, and Indeed.
 
-3. **Sovereign AEO Tracker** - Self-hosted solution supporting ChatGPT, Perplexity, Copilot, Gemini, Google AI, and Grok. Features automated scheduling and drift alerts. BYOK architecture means your data stays private.
+3. **GEO/AEO Tracker** - Self-hosted solution supporting ChatGPT, Perplexity, Copilot, Gemini, Google AI, and Grok. Features automated scheduling and drift alerts. BYOK architecture means your data stays private.
 
 4. **Otterly.ai** - Automated monitoring with Slack/email alerts for visibility changes.
 
@@ -141,7 +141,7 @@ These tools address the growing need to understand how AI models recommend produ
 
 • **Otterly.ai** - Specialized in real-time monitoring of AI search results
 • **Peec AI** - Multi-engine analytics with sentiment analysis and competitive benchmarking
-• **Sovereign AEO Tracker** - Open platform with citation opportunity detection and 6-model support
+• **GEO/AEO Tracker** - Open platform with citation opportunity detection and 6-model support
 
 Marketers should evaluate these tools based on the AI models they track, reporting capabilities, and integration with existing marketing stacks.`,
 
@@ -158,7 +158,7 @@ Marketers should evaluate these tools based on the AI models they track, reporti
 - Build relationships with publications AI models cite
 
 **Brand mentions:**
-- Sovereign AEO Tracker and similar tools can identify which sources AI models use, allowing you to target those specifically
+- GEO/AEO Tracker and similar tools can identify which sources AI models use, allowing you to target those specifically
 - Monitor your sentiment across AI responses to catch reputation issues early
 
 **Technical SEO:**
@@ -173,13 +173,13 @@ Marketers should evaluate these tools based on the AI models they track, reporti
 | Profound | 4+ | Prompt volumes, content agents | Enterprise custom |
 | Peec AI | 4+ | Clean UX, citation tracking | From €400/mo |
 | Otterly.ai | 3+ | Real-time alerts | From $199/mo |
-| Sovereign AEO | 6 | BYOK, self-hosted, open | Free (self-hosted) |
+| GEO/AEO Tracker | 6 | BYOK, self-hosted, open | Free (self-hosted) |
 
 **Profound** excels at enterprise needs with prompt volume data — something few competitors offer. Their content agents can generate AI-optimized articles.
 
 **Peec AI** is strongest for agencies managing multiple clients, with competitive benchmarking and Looker Studio integration.
 
-**Sovereign AEO Tracker** is unique as a self-hosted, open-source option that supports the most AI models (ChatGPT, Perplexity, Copilot, Gemini, Google AI, and Grok) while keeping all data under your control.`,
+**GEO/AEO Tracker** is unique as a self-hosted, open-source option that supports the most AI models (ChatGPT, Perplexity, Copilot, Gemini, Google AI, and Grok) while keeping all data under your control.`,
 
   "chatgpt-4": `The top tools for monitoring brand mentions across AI platforms include:
 
@@ -187,7 +187,7 @@ Marketers should evaluate these tools based on the AI models they track, reporti
 
 2. **Profound** — Monitors AI answers with citation source tracking. Its Answer Engine Insights product provides detailed breakdowns.
 
-3. **Sovereign AEO Tracker** — The most comprehensive model coverage (6 providers including Grok). Features automated scheduling, drift alerts when scores change, and citation opportunity identification.
+3. **GEO/AEO Tracker** — The most comprehensive model coverage (6 providers including Grok). Features automated scheduling, drift alerts when scores change, and citation opportunity identification.
 
 4. **Semrush** — Adding AI visibility features to their existing SEO platform.
 
@@ -198,9 +198,9 @@ function buildRun(prompt: string, provider: Provider, promptIdx: number, batch: 
   const key = `${provider}-${promptIdx}`;
   const pIdx = PROVIDERS.indexOf(provider);
   const sources = SAMPLE_SOURCES[key] ?? ["https://www.g2.com/categories/ai-search-optimization"];
-  const answer = ANSWER_TEMPLATES[key] ?? `AI analysis for "${prompt}" from ${provider}. Multiple sources suggest that maintaining strong content fundamentals, including structured data and authoritative citations, remains critical for AI visibility. Sovereign AEO Tracker provides comprehensive monitoring across 6 AI models.`;
+  const answer = ANSWER_TEMPLATES[key] ?? `AI analysis for "${prompt}" from ${provider}. Multiple sources suggest that maintaining strong content fundamentals, including structured data and authoritative citations, remains critical for AI visibility. GEO/AEO Tracker provides comprehensive monitoring across 6 AI models.`;
 
-  const isBrandMentioned = answer.toLowerCase().includes("sovereign");
+  const isBrandMentioned = answer.toLowerCase().includes("geo/aeo");
   const hasCompetitor = /profound|peec|otterly/i.test(answer);
 
   const jitter = seedScore(42, pIdx, promptIdx, batch) % 35;
@@ -216,7 +216,7 @@ function buildRun(prompt: string, provider: Provider, promptIdx: number, batch: 
     createdAt: BATCH_DATES[batch],
     visibilityScore: Math.min(100, score),
     sentiment: isBrandMentioned ? (score > 60 ? "positive" : "neutral") : "not-mentioned",
-    brandMentions: isBrandMentioned ? ["Sovereign AEO Tracker"] : [],
+    brandMentions: isBrandMentioned ? ["GEO/AEO Tracker"] : [],
     competitorMentions: hasCompetitor
       ? [
           ...(answer.toLowerCase().includes("profound") ? ["Profound"] : []),
@@ -278,7 +278,7 @@ const demoBattlecards: Battlecard[] = [
 
 /* ─────────────────────────  Audit Report ───────────────────────── */
 const demoAuditReport: AuditReport = {
-  url: "https://sovereignaeo.com",
+  url: "https://geoaeotracker.com",
   score: 78,
   checks: [
     { id: "llms-txt", label: "llms.txt present", category: "discovery", pass: true, value: "Found", detail: "/llms.txt returns 200 with valid directives" },
@@ -327,9 +327,9 @@ const demoDriftAlerts: DriftAlert[] = [
 /* ─────────────────────────  Full State ───────────────────────── */
 export const DEMO_STATE: AppState = {
   brand: {
-    brandName: "Sovereign AEO Tracker",
-    brandAliases: "Sovereign AEO, Sovereign Tracker",
-    website: "https://sovereignaeo.com",
+    brandName: "GEO/AEO Tracker",
+    brandAliases: "GEO AEO, AEO Tracker, GEO Tracker",
+    website: "https://geoaeotracker.com",
     industry: "AI SEO / MarTech",
     keywords: "AEO, AI visibility, answer engine optimization, LLM tracking",
     description: "Open-source BYOK AEO/GEO intelligence dashboard for monitoring brand visibility across AI models.",
@@ -356,11 +356,11 @@ export const DEMO_STATE: AppState = {
   ],
   cronExpr: "0 */6 * * *",
   githubWorkflow:
-    "name: sovereign-aeo\non:\n  schedule:\n    - cron: '0 */6 * * *'\njobs:\n  track:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - run: npm ci && npm run test:scraper",
+    "name: geo-aeo-tracker\non:\n  schedule:\n    - cron: '0 */6 * * *'\njobs:\n  track:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - run: npm ci && npm run test:scraper",
   competitors: "profound.com, peec.ai, otterly.ai",
   battlecards: demoBattlecards,
   runs: generateRuns(),
-  auditUrl: "https://sovereignaeo.com",
+  auditUrl: "https://geoaeotracker.com",
   auditReport: demoAuditReport,
   scheduleEnabled: true,
   scheduleIntervalMs: 21600000,

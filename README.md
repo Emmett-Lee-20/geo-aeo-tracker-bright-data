@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/banner.svg" alt="Sovereign AEO Tracker – Open-source AI visibility dashboard" width="100%"/>
+  <img src="public/banner.svg" alt="GEO/AEO Tracker – Open-source AI visibility dashboard" width="100%"/>
 </p>
 
 <p align="center">
@@ -8,7 +8,7 @@
   <a href="#deploy-to-vercel"><img src="https://img.shields.io/badge/Deploy-Vercel-black?style=for-the-badge&logo=vercel" alt="Deploy to Vercel"/></a>
 </p>
 
-<h1 align="center">Sovereign AEO Tracker</h1>
+<h1 align="center">GEO/AEO Tracker</h1>
 
 <p align="center">
   Open-source, local-first AI visibility intelligence dashboard.<br/>
@@ -25,7 +25,7 @@
 ---
 
 > 🌐 **Built with [Bright Data](https://brightdata.com/?utm_source=geo-tracker-os)** — the world's leading web data platform.
-> Sovereign AEO Tracker uses Bright Data's AI Scraper API to reliably collect structured responses from 6 AI models.
+> GEO/AEO Tracker uses Bright Data's AI Scraper API to reliably collect structured responses from 6 AI models.
 > [Get your API key →](https://brightdata.com/?utm_source=geo-tracker-os)
 
 ---
@@ -36,7 +36,7 @@ AI models are replacing traditional search for millions of queries. If your bran
 
 Existing tools charge **$200–$500+/month**, lock you into closed ecosystems, and store your data on their servers.
 
-**Sovereign AEO Tracker** is the alternative:
+**GEO/AEO Tracker** is the alternative:
 
 - 🔑 **BYOK** (Bring Your Own Keys): your data never leaves your machine
 - 🤖 **6 AI models** simultaneously: more coverage than paid tools
