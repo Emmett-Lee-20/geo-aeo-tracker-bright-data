@@ -124,6 +124,8 @@ export type RunDelta = {
 
 export type AppState = {
   brand: BrandConfig;
+  /** ISO 3166-1 alpha-2 country code for Bright Data geolocation (e.g. "MY", "SG"). Empty = Bright Data default (US). */
+  scrapeGeo: string;
   provider: Provider;
   /** Multiple providers selected for parallel runs */
   activeProviders: Provider[];

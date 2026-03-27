@@ -139,6 +139,7 @@ const defaultState: AppState = {
     keywords: "",
     description: "",
   },
+  scrapeGeo: "",
   provider: "chatgpt",
   activeProviders: ["chatgpt"],
   prompt:
@@ -765,6 +766,7 @@ export function SovereignDashboard({ demoMode = false }: { demoMode?: boolean } 
           provider,
           prompt,
           requireSources: true,
+          ...(state.scrapeGeo ? { country: state.scrapeGeo } : {}),
         }),
       });
 
@@ -1186,9 +1188,11 @@ Now analyze all ${competitorList.length} competitors:`,
       return (
         <ProjectSettingsTab
           brand={state.brand}
+          scrapeGeo={state.scrapeGeo}
           onBrandChange={(patch) =>
             setState((prev) => ({ ...prev, brand: { ...prev.brand, ...patch } }))
           }
+          onGeoChange={(geo) => setState((prev) => ({ ...prev, scrapeGeo: geo }))}
           onReset={handleResetData}
         />
       );

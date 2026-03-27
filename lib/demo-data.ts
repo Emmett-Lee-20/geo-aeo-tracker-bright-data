@@ -334,6 +334,7 @@ export const DEMO_STATE: AppState = {
     keywords: "AEO, AI visibility, answer engine optimization, LLM tracking",
     description: "Open-source BYOK AEO/GEO intelligence dashboard for monitoring brand visibility across AI models.",
   },
+  scrapeGeo: "",
   provider: "chatgpt",
   activeProviders: ["chatgpt", "perplexity", "gemini", "copilot", "google_ai", "grok"],
   prompt: "What are the best AI visibility tracking tools for marketing teams in 2026?",
