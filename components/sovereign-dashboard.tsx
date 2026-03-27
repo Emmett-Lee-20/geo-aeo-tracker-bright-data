@@ -251,6 +251,8 @@ export function SovereignDashboard({ demoMode = false }: { demoMode?: boolean } 
   const [activeWsId, setActiveWsId] = useState<string>("default");
   const [showWsPicker, setShowWsPicker] = useState(false);
   const [showScoreInfo, setShowScoreInfo] = useState(false);
+  /** Blocks the save effect from firing before the initial load from IndexedDB completes */
+  const isLoaded = useRef(false);
 
   /** Apply theme class to <html> */
   const applyTheme = useCallback((t: "light" | "dark" | "system") => {
@@ -332,7 +334,10 @@ export function SovereignDashboard({ demoMode = false }: { demoMode?: boolean } 
         if (merged.activeProviders.length === 0) {
           merged.activeProviders = [merged.provider];
         }
+        isLoaded.current = false;
         setState(merged);
+        // Mark as loaded after state is queued so the save effect doesn't fire first
+        requestAnimationFrame(() => { isLoaded.current = true; });
       }
     });
     return () => {
@@ -341,7 +346,7 @@ export function SovereignDashboard({ demoMode = false }: { demoMode?: boolean } 
   }, [activeWsId]);
 
   useEffect(() => {
-    if (demoMode || !activeWsId) return;
+    if (demoMode || !activeWsId || !isLoaded.current) return;
     saveSovereignValue(storageKeyForWorkspace(activeWsId), state);
     // Update workspace brandName if changed
     if (state.brand.brandName) {
