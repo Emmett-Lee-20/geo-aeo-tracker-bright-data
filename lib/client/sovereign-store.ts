@@ -1,27 +1,45 @@
 "use client";
 
-import { get, set } from "idb-keyval";
+import { get, set, del } from "idb-keyval";
+import { supabase } from "./supabase";
 
 /**
- * Load state — IndexedDB is the source of truth, localStorage is a fast-path
- * cache that may be incomplete (quota limited).
+ * Load state — Supabase is the source of truth when available.
+ * Falls back to IndexedDB → localStorage for offline or pre-migration data.
  */
 export async function loadSovereignValue<T>(key: string, fallback: T): Promise<T> {
+  // 1. Try Supabase first (cloud, authoritative)
+  if (supabase) {
+    try {
+      const { data, error } = await supabase
+        .from("app_data")
+        .select("value")
+        .eq("key", key)
+        .maybeSingle();
+
+      if (!error && data?.value !== undefined) {
+        // Cache locally so the app works offline
+        await set(key, data.value).catch(() => {});
+        return data.value as T;
+      }
+    } catch {
+      // Network error — fall through to local cache
+    }
+  }
+
+  // 2. Fall back to IndexedDB (local cache / offline)
   try {
-    // Try IndexedDB first (unlimited storage, source of truth)
     const indexed = await get<T>(key);
     if (indexed !== undefined) return indexed;
 
-    // Fall back to localStorage (may have data from older versions)
+    // 3. Fall back to localStorage (legacy data from older versions)
     const localRaw = window.localStorage.getItem(key);
     if (localRaw) {
       const parsed = JSON.parse(localRaw) as T;
-      // Migrate: persist to IndexedDB so future loads are fast
       await set(key, parsed).catch(() => {});
       return parsed;
     }
   } catch {
-    // Last resort: check localStorage even if IDB failed
     try {
       const localRaw = window.localStorage.getItem(key);
       if (localRaw) return JSON.parse(localRaw) as T;
@@ -32,26 +50,39 @@ export async function loadSovereignValue<T>(key: string, fallback: T): Promise<T
 }
 
 /**
- * Save state — always write to IndexedDB (no size limit).
- * Attempt localStorage as a fast-path cache, but swallow quota errors.
+ * Save state — writes to IndexedDB immediately (fast, local cache),
+ * then syncs to Supabase in the background (cloud persistence).
  */
 export async function saveSovereignValue<T>(key: string, value: T): Promise<void> {
-  // IndexedDB is the primary store — always save here
+  // Always write locally first so the UI never waits on the network
   await set(key, value);
 
-  // localStorage is best-effort (may exceed ~5 MB quota)
+  // localStorage best-effort cache
   try {
-    const serialized = JSON.stringify(value);
-    window.localStorage.setItem(key, serialized);
+    window.localStorage.setItem(key, JSON.stringify(value));
   } catch {
-    // Quota exceeded — clear the stale localStorage entry so we don't
-    // serve outdated data on next load. IndexedDB has the real copy.
     try { window.localStorage.removeItem(key); } catch { /* ignore */ }
+  }
+
+  // Sync to Supabase in the background — don't block the UI
+  if (supabase) {
+    supabase
+      .from("app_data")
+      .upsert({ key, value, updated_at: new Date().toISOString() })
+      .then(({ error }) => {
+        if (error) console.warn("[supabase] sync failed:", error.message);
+      });
   }
 }
 
 export async function clearSovereignStore(key: string): Promise<void> {
   try { window.localStorage.removeItem(key); } catch { /* ignore */ }
-  const { del } = await import("idb-keyval");
   await del(key);
+
+  // Also delete from Supabase
+  if (supabase) {
+    supabase.from("app_data").delete().eq("key", key).then(({ error }) => {
+      if (error) console.warn("[supabase] delete failed:", error.message);
+    });
+  }
 }
